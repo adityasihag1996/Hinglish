@@ -3,6 +3,7 @@ import argparse
 import pickle
 
 from model import Encoder, Decoder, Seq2Seq
+from config import NUM_LAYERS, HIDDEN_SIZE, BATCH_SIZE
 
 
 def transliterate(input_text, encoder, decoder, source_vocab, target_vocab, target_vocab_inv, max_length = 50, device = "cpu"):
@@ -21,8 +22,9 @@ def transliterate(input_text, encoder, decoder, source_vocab, target_vocab, targ
     
     # Encoder part
     with torch.no_grad():
-        encoder_hidden = encoder.initHidden().to(device)
-        encoder_outputs, encoder_hidden = encoder(input_tensor, input_length, encoder_hidden)
+        encoder_hidden = (torch.zeros(NUM_LAYERS * 2, BATCH_SIZE, HIDDEN_SIZE, device=device),
+                          torch.zeros(NUM_LAYERS * 2, BATCH_SIZE, HIDDEN_SIZE, device=device))
+        encoder_outputs, encoder_hidden = encoder(input_tensor, input_length)
     
     # Decoder part
     decoder_input = torch.tensor([[target_vocab['<SOS>']]], device=device)  # SOS
@@ -30,19 +32,26 @@ def transliterate(input_text, encoder, decoder, source_vocab, target_vocab, targ
     
     # Store the output words and attention weights
     decoded_words = []
-    
+
     for di in range(max_length):
         with torch.no_grad():
+            # Ensure decoder_input is 2D: [1, 1]
+            decoder_input = decoder_input.view(1, 1)
+            # Forward pass through the decoder
             decoder_output, decoder_hidden = decoder(decoder_input, decoder_hidden)
-            topv, topi = decoder_output.data.topk(1)  # Get most likely word index
-            if topi.item() == target_vocab['<EOS>']:
+            # Get the most likely next output
+            topv, topi = decoder_output.data.topk(1)
+            # Extract the actual index
+            ni = topi.item()
+            
+            if ni == target_vocab['<EOS>']:
                 decoded_words.append('<EOS>')
                 break
             else:
-                decoded_words.append(target_vocab_inv[topi.item()])
+                decoded_words.append(target_vocab_inv[ni])
             
-            # Next input is current output
-            decoder_input = topi.squeeze().detach()
+            # Prepare the next input to the decoder
+            decoder_input = torch.tensor([[ni]], device=device)
 
     return ''.join(decoded_words)
 
