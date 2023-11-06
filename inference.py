@@ -52,6 +52,8 @@ def parse_opt():
 
     parser.add_argument("-mp", "--model_path", type=str, required=True,
                     help="Path to the model state-dict.")
+    parser.add_argument("-inp", "--input", type=str, required=True,
+                    help="Input to be transliterated.")
     parser.add_argument("-ev", "--vocab_english", type=str, required=True,
                     help="Path to the english vocab pickle file.")
     parser.add_argument("-hv", "--vocab_hindi", type=str, required=True,
@@ -66,6 +68,7 @@ if __name__ == '__main__':
     args = parse_opt()
 
     input_seq = args.input
+    model_path = args.model_path
     hindi_vocab_path = args.vocab_hindi
     english_vocab_path = args.vocab_english
 
@@ -78,7 +81,7 @@ if __name__ == '__main__':
     english_vocab_inv = {idx: char for char, idx in english_vocab.items()}
 
     model = Seq2Seq(Encoder, Decoder, hindi_vocab['<SOS>'])
-    model.load_state_dict(torch.load(args.model_path))
+    model.load_state_dict(torch.load(model_path))
 
     transliterated_text = transliterate(input_seq, model.encoder, model.decoder, hindi_vocab, english_vocab, english_vocab_inv, device = "cpu")
     print(transliterated_text)

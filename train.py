@@ -45,7 +45,7 @@ def runner(model, train_loader, num_epochs, learning_rate, device, hindi_pad_tok
 
         print(f"Epoch {epoch+1}/{num_epochs}, Loss: {total_loss/len(train_loader)}")
 
-        torch.save(model.state_dict(), f'seg2seg_hinglish_e{epoch}.pth')
+        torch.save(model.state_dict(), f'seq2seq_hinglish_e{epoch}.pth')
 
     print("Training Complete!")
 
