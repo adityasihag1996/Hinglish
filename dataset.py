@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 
 from utils import read_data
-from config import TRAIN_PATH, TEST_PATH, VOCAB_PATH_HINDI, VOCAB_PATH_ENGLISH
+from config import TRAIN_PATH, TEST_PATH, VOCAB_PATH_HINDI, VOCAB_PATH_ENGLISH, BATCH_SIZE
 
 
 class TransliterationDataset(Dataset):
@@ -57,11 +57,11 @@ def create_dataset_and_dataloader():
 
     # Assuming 'train_hindi_words' and 'train_english_words' are already defined lists of words
     train_dataset = TransliterationDataset(train_hindi_words, train_english_words, hindi_vocab, english_vocab)
-    train_loader = DataLoader(train_dataset, batch_size=32, collate_fn=collate_fn, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size = BATCH_SIZE, collate_fn=collate_fn, shuffle=True)
 
     # Assuming 'test_hindi_words' and 'test_english_words' are already defined lists of words
     test_dataset = TransliterationDataset(test_hindi_words, test_english_words, hindi_vocab, english_vocab)
-    test_loader = DataLoader(test_dataset, batch_size=32, collate_fn=collate_fn, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size = BATCH_SIZE, collate_fn=collate_fn, shuffle=False)
 
     ENGLISH_PAD_TOKEN = english_vocab['<PAD>']
     HINDI_PAD_TOKEN = hindi_vocab['<PAD>']
