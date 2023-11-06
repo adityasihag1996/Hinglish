@@ -51,7 +51,8 @@ python train.py
 ```
 This will start the training process using the default hyperparameters defined in the script. Checkpoints will be saved in the checkpoints directory.
 
-**_DATASET_:-** Dataset has been curated using `Google Dakshina dataset <https://github.com/google-research-datasets/dakshina>`__
+**_DATASET_:-** Dataset has been curated using [Google Dakshina dataset](https://github.com/google-research-datasets/dakshina).
+
 You will find partial train and test files used to train this model, in the `/data` directory.
 
 ## Sample Inference
