@@ -55,6 +55,9 @@ def create_dataset_and_dataloader():
     train_hindi_words, train_english_words = read_data(TRAIN_PATH)
     test_hindi_words, test_english_words = read_data(TEST_PATH)
 
+    ENGLISH_PAD_TOKEN = english_vocab['<PAD>']
+    HINDI_PAD_TOKEN = hindi_vocab['<PAD>']
+
     # Assuming 'train_hindi_words' and 'train_english_words' are already defined lists of words
     train_dataset = TransliterationDataset(train_hindi_words, train_english_words, hindi_vocab, english_vocab)
     train_loader = DataLoader(train_dataset, batch_size = BATCH_SIZE, collate_fn=collate_fn, shuffle=True)
@@ -62,8 +65,5 @@ def create_dataset_and_dataloader():
     # Assuming 'test_hindi_words' and 'test_english_words' are already defined lists of words
     test_dataset = TransliterationDataset(test_hindi_words, test_english_words, hindi_vocab, english_vocab)
     test_loader = DataLoader(test_dataset, batch_size = BATCH_SIZE, collate_fn=collate_fn, shuffle=False)
-
-    ENGLISH_PAD_TOKEN = english_vocab['<PAD>']
-    HINDI_PAD_TOKEN = hindi_vocab['<PAD>']
 
     return train_loader, test_loader, english_vocab, hindi_vocab
