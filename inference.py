@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     english_vocab_inv = {idx: char for char, idx in english_vocab.items()}
 
-    model = Seq2Seq(Encoder, Decoder, hindi_vocab['<SOS>'])
+    model = Seq2Seq(Encoder, Decoder, english_vocab['<SOS>'])
     model.load_state_dict(torch.load(model_path))
 
     transliterated_text = transliterate(input_seq, model.encoder, model.decoder, hindi_vocab, english_vocab, english_vocab_inv, device = "cpu")

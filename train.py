@@ -8,8 +8,8 @@ from dataset import create_dataset_and_dataloader
 from config import NUM_EPOCHS, LR, DEVICE, NUM_LAYERS, INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE, NUM_EPOCHS, TEACHER_FORCING_EPOCHS
 
 
-def runner(model, train_loader, num_epochs, learning_rate, device, hindi_pad_token):
-    criterion = nn.CrossEntropyLoss(ignore_index = hindi_pad_token)
+def runner(model, train_loader, num_epochs, learning_rate, device, english_pad_token):
+    criterion = nn.CrossEntropyLoss(ignore_index = english_pad_token)
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 
     model.train()
@@ -52,11 +52,14 @@ def runner(model, train_loader, num_epochs, learning_rate, device, hindi_pad_tok
 
 
 if __name__ == '__main__':
+    train_loader, test_loader, english_vocab, hindi_vocab = create_dataset_and_dataloader()
+
+    INPUT_SIZE = len(hindi_vocab)+1
+    OUTPUT_SIZE = len(english_vocab)+1
+
     encoder = Encoder(INPUT_SIZE, HIDDEN_SIZE, NUM_LAYERS)
     decoder = Decoder(HIDDEN_SIZE, OUTPUT_SIZE, NUM_LAYERS)
-    model = Seq2Seq(encoder, decoder)
+    model = Seq2Seq(encoder, decoder, english_vocab["<SOS>"])
 
-    train_loader, test_loader, hindi_pad_token = create_dataset_and_dataloader()
-
-    runner(model, train_loader, NUM_EPOCHS, LR, DEVICE, hindi_pad_token)
+    runner(model, train_loader, NUM_EPOCHS, LR, DEVICE, english_vocab["<PAD>"])
 
