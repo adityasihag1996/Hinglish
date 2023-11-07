@@ -40,7 +40,7 @@ pip install -r requirements.txt
 To transliterate text, run the following command:
 
 ```
-python transliterate.py --input "your input text here" -mp "/path/to/your/model" -ev "/path/to/your/english_vocab.pickle" -mp "/path/to/your/hindi_vocab.pickle"
+python inference.py --input "your input text here" -mp "/path/to/your/model" -ev "/path/to/your/english_vocab.pickle" -hv "/path/to/your/hindi_vocab.pickle"
 ```
 The script transliterate.py will output the transliterated text in Devanagari script.
 

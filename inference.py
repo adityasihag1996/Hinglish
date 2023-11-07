@@ -77,6 +77,7 @@ if __name__ == '__main__':
     args = parse_opt()
 
     input_seq = args.input
+    # input_seq = "कालका"
     model_path = args.model_path
     hindi_vocab_path = args.vocab_hindi
     english_vocab_path = args.vocab_english
@@ -89,7 +90,12 @@ if __name__ == '__main__':
 
     english_vocab_inv = {idx: char for char, idx in english_vocab.items()}
 
-    model = Seq2Seq(Encoder, Decoder, english_vocab['<SOS>'])
+    INPUT_SIZE = len(hindi_vocab)+1
+    OUTPUT_SIZE = len(english_vocab)+1
+
+    encoder = Encoder(INPUT_SIZE, HIDDEN_SIZE, NUM_LAYERS)
+    decoder = Decoder(HIDDEN_SIZE, OUTPUT_SIZE, NUM_LAYERS)
+    model = Seq2Seq(encoder, decoder, english_vocab['<SOS>'])
     model.load_state_dict(torch.load(model_path))
 
     transliterated_text = transliterate(input_seq, model.encoder, model.decoder, hindi_vocab, english_vocab, english_vocab_inv, device = "cpu")

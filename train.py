@@ -9,6 +9,8 @@ from config import NUM_EPOCHS, LR, DEVICE, NUM_LAYERS, HIDDEN_SIZE, NUM_EPOCHS, 
 
 
 def runner(model, train_loader, num_epochs, learning_rate, device, english_pad_token):
+    model = model.to(device)
+
     criterion = nn.CrossEntropyLoss(ignore_index = english_pad_token)
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 
