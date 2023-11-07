@@ -5,7 +5,7 @@ from torch.nn import CTCLoss
 
 from model import Encoder, Decoder, Seq2Seq
 from dataset import create_dataset_and_dataloader
-from config import NUM_EPOCHS, LR, DEVICE, NUM_LAYERS, INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE, NUM_EPOCHS, TEACHER_FORCING_EPOCHS
+from config import NUM_EPOCHS, LR, DEVICE, NUM_LAYERS, HIDDEN_SIZE, NUM_EPOCHS, TEACHER_FORCING_EPOCHS
 
 
 def runner(model, train_loader, num_epochs, learning_rate, device, english_pad_token):

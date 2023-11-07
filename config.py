@@ -6,7 +6,7 @@ DECODER_DROPOUT = 0.5
 BATCH_SIZE = 128
 LR = 0.0001
 TEACHER_FORCING_EPOCHS = 20
-DEVICE = "cuda"
+DEVICE = "cpu"
 
 TRAIN_PATH = "data/train_hinglish.txt"
 TEST_PATH = "data/test_hinglish.txt"
