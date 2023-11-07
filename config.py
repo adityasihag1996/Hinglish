@@ -8,7 +8,7 @@ LR = 0.0001
 TEACHER_FORCING_EPOCHS = 20
 DEVICE = "cuda"
 
-TRAIN_PATH = "train.txt"
-TEST_PATH = "train.txt"
-VOCAB_PATH_HINDI = "vocab_hindi.pickle"
-VOCAB_PATH_ENGLISH = "vocab_hindi.pickle"
+TRAIN_PATH = "data/train_hinglish.txt"
+TEST_PATH = "data/test_hinglish.txt"
+VOCAB_PATH_HINDI = "data/vocab_hindi.pickle"
+VOCAB_PATH_ENGLISH = "data/vocab_english.pickle"
