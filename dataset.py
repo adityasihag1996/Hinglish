@@ -29,7 +29,13 @@ class TransliterationDataset(Dataset):
             len(english_indices)  # changed to length of english_indices
         )
 
+
+ENGLISH_PAD_TOKEN = None
+HINDI_PAD_TOKEN = None
+
 def collate_fn(batch):
+    global ENGLISH_PAD_TOKEN, HINDI_PAD_TOKEN
+
     batch.sort(key=lambda x: x[2], reverse=True) # sort by length of hindi word for efficient packing
     hindi_seqs, english_seqs, hindi_lens, english_lens = zip(*batch)
 
@@ -38,10 +44,6 @@ def collate_fn(batch):
     english_seqs_padded = torch.nn.utils.rnn.pad_sequence(english_seqs, batch_first=True, padding_value = ENGLISH_PAD_TOKEN)
 
     return hindi_seqs_padded, torch.tensor(hindi_lens), english_seqs_padded, torch.tensor(english_lens)
-
-
-ENGLISH_PAD_TOKEN = None
-HINDI_PAD_TOKEN = None
 
 def create_dataset_and_dataloader():
     global ENGLISH_PAD_TOKEN, HINDI_PAD_TOKEN
